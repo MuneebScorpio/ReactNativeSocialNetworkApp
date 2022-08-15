@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
   package="com.wpg.socialnetwork.app.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,24 +30,30 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
 
-      <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+      <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" android:exported="true" />
       <service android:name="io.wazo.callkeep.VoiceConnectionService"
         android:label="Wazo"
-        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
+        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        android:exported="true">
         <intent-filter>
             <action android:name="android.telecom.ConnectionService" />
         </intent-filter>
       </service>
-      <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
+      <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" android:exported="true" />
   
       <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyDOJM4bdpX3wXWQyx1m5mkQCFohWn1S7pI"/>
       <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+      <meta-data
+tools:replace="android:value" 
+android:name="org.unimodules.core.AppLoader#react-native-headless"
+android:value="org.unimodules.adapters.react.apploader.RNHeadlessAppLoader"/>
       <activity
         android:name=".SplashActivity"
         android:theme="@style/SplashTheme"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
@@ -62,7 +68,7 @@
         android:windowSoftInputMode="adjustPan"
         android:exported="true">
       </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="true" />
     </application>
 
 </manifest>

@@ -1,5 +1,12 @@
 package com.wpg.socialnetwork.app.android;
 
+import android.content.res.Configuration;
+import expo.modules.ApplicationLifecycleDispatcher;
+import expo.modules.ReactNativeHostWrapper;
+
+
+import androidx.annotation.NonNull;
+
 import com.wpg.socialnetwork.app.android.generated.BasePackageList;
 
 import android.app.Application;
@@ -8,9 +15,6 @@ import android.util.Log;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
-import org.unimodules.core.interfaces.SingletonModule;
 
 // import com.twiliorn.library.TwilioPackage;
 
@@ -30,15 +34,15 @@ import com.facebook.react.shell.MainReactPackage;
 
 import com.facebook.soloader.SoLoader;
 
-import java.util.Arrays;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
-
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
++    this,
++    new ReactNativeHost(this) {
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -68,21 +72,29 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
-  };
+  });
 
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    Intent intent = new Intent("onConfigurationChanged");
-    intent.putExtra("newConfig", newConfig);
-    sendBroadcast(intent);
-  }
+  // @Override
+  // public void onConfigurationChanged(Configuration newConfig) {
+  //   super.onConfigurationChanged(newConfig);
+  //   Intent intent = new Intent("onConfigurationChanged");
+  //   intent.putExtra("newConfig", newConfig);
+  //   sendBroadcast(intent);
+  // }
 
   @Override
   public ReactNativeHost getReactNativeHost() {
+    ApplicationLifecycleDispatcher.onApplicationCreate(this);
     return mReactNativeHost;
+    
   }
+   @Override
++  public void onConfigurationChanged(@NonNull Configuration newConfig) {
++    super.onConfigurationChanged(newConfig);
++    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
++  }
 
+ 
   @Override
   public void onCreate() {
     super.onCreate();
